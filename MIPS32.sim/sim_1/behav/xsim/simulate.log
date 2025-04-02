@@ -1,0 +1,4 @@
+Time resolution is 1 ps
+mem[120]:   85 
+mem[121]:  130
+$finish called at time : 600 ns : File "C:/Users/adity/OneDrive/Desktop/vivado_ws/MIPS32/MIPS32.srcs/sim_1/new/test_mips_work.v" Line 44
