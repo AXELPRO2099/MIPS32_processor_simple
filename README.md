@@ -1,94 +1,64 @@
-﻿# MIPS32_processor_simple
+# MIPS32 5-Stage Pipelined Processor (Simple Implementation)
 
 ## Overview
-This repository contains a Verilog implementation of a 5-stage pipelined MIPS32 processor, synthesized and tested in Xilinx Vivado. The design includes all five classic pipeline stages: Instruction Fetch (IF), Instruction Decode (ID), Execute (EX), Memory Access (MEM), and Write Back (WB).
+A simplified Verilog implementation of a 5-stage pipelined MIPS32 processor, designed for clarity and educational purposes. Synthesizable in Xilinx Vivado with included testbench for verification.
 
-## Features
-- 32-bit MIPS32 architecture implementation
-- 5-stage pipeline:
-  - Instruction Fetch (IF)
-  - Instruction Decode (ID)
-  - Execute (EX)
-  - Memory Access (MEM)
-  - Write Back (WB)
-- Hazard detection and forwarding unit
-- Support for basic MIPS instructions (R-type, I-type, J-type)
-- Separate instruction and data memory
-- Testbench for functional verification
+## Key Features
+- **Clean 5-stage pipeline**: IF, ID, EX, MEM, WB
+- **Basic hazard handling**: Forwarding and stall logic
+- **Essential MIPS instructions**: Supports core R/I/J-type ops
+- **Simple memory interface**: Separate instruction/data memory
+- **Lightweight design**: < 1K lines of Verilog
 
-## Supported Instructions
-The processor supports the following MIPS instructions:
-- **Arithmetic**: ADD, SUB, ADDI, AND, OR, XOR, NOR, SLT, SLTI
-- **Memory**: LW, SW
-- **Branch**: BEQ, BNE
-- **Jump**: J, JR, JAL
 
-## Getting Started
+## Quick Start
+### 1. Clone & Open in Vivado
+```bash
+git clone https://github.com/yourusername/MIPS32_processor_simple.git
+vivado -source setup.tcl  # Creates Vivado project
+```
 
-### Prerequisites
-- Xilinx Vivado (tested with 2020.2)
-- Verilog simulator (Vivado's built-in xsim or ModelSim)
+### 2. Run Testbench
+```tcl
+# In Vivado TCL console:
+launch_simulation -script_mode
+run_all  # Executes sample test programs
+```
 
-### Installation
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/mips32-pipeline.git
-   cd mips32-pipeline
-   ```
+### 3. Sample Output
+```
+[TEST] ADD/SUB Test: PASS
+[TEST] LW/SW Test: PASS
+[TEST] Branch Test: PASS
+Pipeline Stalls: 3
+CPI: 1.07
+```
 
-2. Open the project in Vivado:
-   ```bash
-   vivado -source scripts/build.tcl
-   ```
+## Instruction Support
+| Type        | Instructions              |
+|-------------|---------------------------|
+| Arithmetic  | ADD, SUB, ADDI, SLT       |
+| Logical     | AND, OR, XOR, NOR         |
+| Memory      | LW, SW                    |
+| Control     | BEQ, BNE, J, JR, JAL      |
 
-### Simulation
-1. Open the project in Vivado
-2. Run the testbench:
-   - In the Flow Navigator, select "Simulation" → "Run Simulation" → "Behavioral Simulation"
-   - The testbench will execute a series of test programs to verify processor functionality
+## Educational Focus
+This implementation emphasizes:
+- Clear pipeline stage boundaries
+- Minimal external dependencies
+- Commented hazard handling logic
+- Step-by-step testbench verification
 
-### Synthesis
-1. In Vivado:
-   - Select "Synthesis" in the Flow Navigator
-   - Click "Run Synthesis"
-2. After synthesis completes, you can proceed to implementation and bitstream generation if targeting an FPGA
+## Limitations
+- No caches or MMU
+- Basic branch prediction (always not taken)
+- No exception handling
 
-## Testbench
-The included testbench verifies:
-- Basic arithmetic operations
-- Memory load/store operations
-- Branch and jump instructions
-- Pipeline hazards and forwarding
-- Data dependencies between instructions
-
-To add your own test programs:
-1. Modify the instruction memory initialization in `imem.v`
-2. Update expected results in the testbench `mips_tb.v`
-
-## Pipeline Hazards Handling
-The processor implements:
-- **Data forwarding**: For EX/MEM and MEM/WB to EX dependencies
-- **Stall detection**: For load-use hazards
-- **Branch prediction**: Simple "always not taken" approach with flushing
-
-## Performance
-The design achieves:
-- 1 CPI (Cycles Per Instruction) for ideal cases
-- Pipeline stalls only for unavoidable hazards
-- Maximum clock frequency dependent on target FPGA (reported after synthesis)
-
-## Future Work
-- Add support for more MIPS instructions
-- Implement caches for instruction and data memory
-- Add exception handling
-- Optimize for higher clock frequencies
-
-## Contributors
-- [Your Name] - Initial work
+## Suggested Improvements
+1. Add more test programs
+2. Implement cache models
+3. Add performance counters
+4. Support more instructions
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-- Based on the classic MIPS architecture
-- Inspired by Patterson and Hennessy's "Computer Organization and Design"
+MIT License - Free for academic/educational use
